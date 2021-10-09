@@ -2,6 +2,7 @@ package com.example.todolist.ui
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.databinding.ActivityAddTaskBinding
 import com.example.todolist.datasource.TaskDataSource
@@ -19,6 +20,7 @@ class AddTaskActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         binding = ActivityAddTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -67,16 +69,23 @@ class AddTaskActivity : AppCompatActivity() {
         }
 
         binding.btnNewTaks.setOnClickListener {
+
             val task = Task(
                 title = binding.tilTitle.text,
                 date = binding.tilDate.text,
                 hour = binding.tilHour.text,
                 id = intent.getIntExtra(TASK_ID, 0)
             )
+
+            if (task.title.isEmpty() && task.date.isEmpty() && task.hour.isEmpty()){
+                Toast.makeText(getApplicationContext(),"Preencha todos os campos",Toast.LENGTH_SHORT).show();
+            }else{
+
             TaskDataSource.insertTask(task)
             setResult(Activity.RESULT_OK)
             finish()
-        }
+        }}
+
     }
 
 
